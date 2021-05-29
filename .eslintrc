@@ -1,0 +1,51 @@
+{
+    "extends": [
+        "react-app",
+        "prettier"
+    ],
+    "rules": {
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx"
+                ]
+            }
+        ],
+        "no-useless-escape": "error",
+        "no-script-url": "error",
+        "jsx-a11y/anchor-has-content": "error",
+        "jsx-a11y/href-no-hash": "off",
+        "react-hooks/exhaustive-deps": "off",
+        "jsx-a11y/anchor-is-valid": "error",
+        "no-template-curly-in-string": "error",
+        "react/prop-types": "error",
+        "react/prefer-stateless-function": "off",
+        "react/jsx-one-expression-per-line": "off",
+        "linebreak-style": "error",
+        "react/jsx-wrap-multilines": "error",
+        "react/no-danger": "error",
+        "react/forbid-prop-types": "warn",
+        "no-use-before-define": "error",
+        "no-param-reassign": "error",
+        "import/no-unresolved": "off",
+        "no-console": "error",
+        "react/no-multi-comp": [
+            "error",
+            {
+                "ignoreStateless": true
+            }
+        ],
+        "space-before-blocks": "error",
+        "space-before-function-paren": [
+            "error",
+            "never"
+        ]
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "legacyDecorators": true
+        }
+    }
+}

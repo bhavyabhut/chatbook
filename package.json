@@ -6,16 +6,43 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^6.0.0",
+    "prettier": "^2.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "stylelint": "^13.13.1",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint-staged": "lint-staged",
+    "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,scss,less}\"",
+    "lint-fix": "eslint --fix --ext .js,jsx src",
+    "lint": "eslint --ext .js,jsx src",
+    "stylelint": "stylelint \"src/**/*.{scss,less}\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,scss,less}": [
+      "prettier --write"
+    ],
+    "src/**/*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "src/**/*.{scss,less}": [
+      "stylelint"
+    ]
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +61,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint": "^7.27.0",
+    "eslint-plugin-react": "^7.23.2"
   }
 }
