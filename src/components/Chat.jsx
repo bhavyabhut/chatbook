@@ -1,18 +1,19 @@
-/* eslint-disable no-undef */
-import React, { useEffect, useState } from 'react'
-import firebase from 'firebase'
-import { auth } from './config/firebase'
+import React, { useEffect } from 'react'
 import { ChatEngine } from 'react-chat-engine'
 import axios from 'axios'
+import { useAuth } from '../provider'
+import { useHistory } from 'react-router-dom'
+import { auth } from '../config/firebase'
+// eslint-disable-next-line no-undef
 const projectId = process.env.REACT_APP_Project_ID
 // eslint-disable-next-line no-undef
 const privetKey = process.env.REACT_APP_PRIVATE_KEY
 
-function App() {
-  const [user, setUser] = useState()
-  const [isUserInChat, setIsUserInChat] = useState(false)
+function Chats() {
+  const user = useAuth()
+  const history = useHistory()
   const test = () => {
-    // console.log('test vadu fn')
+    console.log('test vadu fn')
     if (user) {
       const myHeaders = new Headers()
       myHeaders.append('Project-ID', projectId)
@@ -38,8 +39,7 @@ function App() {
           },
         })
         .then((data) => {
-          console.log(data)
-          setIsUserInChat(true)
+          console.log(data, 'ha')
         })
         .catch((e) => {
           console.log(e, e.response, 'e')
@@ -59,7 +59,6 @@ function App() {
             )
             .then((data) => {
               console.log(data, 'ha na')
-              setIsUserInChat(true)
             })
             .catch((e) => console.log(e))
         })
@@ -67,41 +66,48 @@ function App() {
   }
 
   useEffect(() => {
-    if (user) test()
+    if (!user) {
+      history.push('/')
+      return
+    }
+    test()
   }, [user])
+  const logout = async () => {
+    try {
+      await auth.signOut()
+      history.push('/')
+    } catch (error) {
+      console.log('logout', error)
+    }
+  }
   return (
     <>
-      {isUserInChat ? (
+      <div
+        style={{
+          width: '100%',
+          background: '#001529',
+          height: '3rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <span style={{ color: 'white' }}>{user?.email}</span>
+        <span style={{ color: 'white', marginRight: '1rem', cursor: 'pointer' }} onClick={logout}>
+          Logout
+        </span>
+      </div>
+
+      {user && (
         <ChatEngine
-          height="100vh"
+          height="calc(100vh - 3rem)"
           projectID={projectId}
           userName={user.email}
           userSecret={user.uid}
         ></ChatEngine>
-      ) : (
-        <>
-          <button
-            onClick={() => {
-              auth
-                .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-                .then((data) => setUser(data.user))
-            }}
-          >
-            Google
-          </button>
-          <button
-            onClick={() => {
-              auth
-                .signInWithPopup(new firebase.auth.FacebookAuthProvider())
-                .then((data) => setUser(data.user))
-            }}
-          >
-            Facebook
-          </button>
-        </>
       )}
     </>
   )
 }
 
-export default App
+export default Chats
